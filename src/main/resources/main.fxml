@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.pawkrol.graingrowth.view.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.pawkrol.graingrowth.view.MainController">
    <children>
       <MenuBar>
         <menus>
@@ -45,7 +45,7 @@
             <Menu fx:id="toolsMenu" disable="true" mnemonicParsing="false" text="Tools">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#onSeed" text="Seed" />
-                  <MenuItem mnemonicParsing="false" text="Inclusion" />
+                  <MenuItem mnemonicParsing="false" onAction="#onInclusion" text="Inclusion" />
               </items>
             </Menu>
         </menus>

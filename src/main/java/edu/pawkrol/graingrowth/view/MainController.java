@@ -77,7 +77,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void onNew() throws IOException {
+    public void onNew() {
         new NewGridDialog()
                 .open()
                 .ifPresent(this::setUpNewGrid);
@@ -86,6 +86,13 @@ public class MainController implements Initializable {
     @FXML
     public void onSeed() {
         new SeedDialog(automataResolver)
+                .open()
+                .ifPresent(o -> gridPainter.paint());
+    }
+
+    @FXML
+    public void onInclusion() {
+        new InclusionDialog(automataResolver)
                 .open()
                 .ifPresent(o -> gridPainter.paint());
     }

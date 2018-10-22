@@ -2,52 +2,53 @@ package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
 import edu.pawkrol.graingrowth.automata.Grid;
-import edu.pawkrol.graingrowth.automata.seed.RandomSeeder;
-import edu.pawkrol.graingrowth.automata.seed.Seeder;
-import edu.pawkrol.graingrowth.automata.strategy.Strategy;
+import edu.pawkrol.graingrowth.automata.inclusion.Inclusion;
+import edu.pawkrol.graingrowth.automata.inclusion.RadiusRandomInclusion;
+import edu.pawkrol.graingrowth.automata.inclusion.SquareRandomInclusion;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.util.Optional;
 
-public class SeedDialog extends AppDialog<Boolean> {
+public class InclusionDialog extends AppDialog<Boolean> {
 
     private AutomataResolver automataResolver;
 
-    SeedDialog(AutomataResolver automataResolver) {
-        super("seed-dialog.fxml");
+    InclusionDialog(AutomataResolver automataResolver) {
+        super("inclusion-dialog.fxml");
 
         this.automataResolver = automataResolver;
     }
 
     @Override
     public Optional<Boolean> open() {
-        dialog.setTitle("Seed");
+        dialog.setTitle("Add inclusions");
 
         dialog.getDialogPane()
                 .getButtonTypes()
                 .addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        ComboBox<Seeder> seederCombo = (ComboBox<Seeder>) dialog.getDialogPane().lookup("#seederCombo");
+        ComboBox<Inclusion> inclusionCombo = (ComboBox<Inclusion>) dialog.getDialogPane().lookup("#inclusionCombo");
         TextField nText = (TextField) dialog.getDialogPane().lookup("#nText");
         TextField rdText = (TextField) dialog.getDialogPane().lookup("#rdText");
 
-        seederCombo.getItems().addAll(
-                new RandomSeeder()
+        inclusionCombo.getItems().addAll(
+                new SquareRandomInclusion(),
+                new RadiusRandomInclusion()
         );
-        seederCombo.getSelectionModel().selectFirst();
+        inclusionCombo.getSelectionModel().selectFirst();
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
-                Strategy strategy = automataResolver.getStrategy();
+                Inclusion inclusion = inclusionCombo.getSelectionModel().getSelectedItem();
                 Grid grid = automataResolver.getGrid();
-                Seeder seeder = seederCombo.getSelectionModel().getSelectedItem();
 
                 int n = Integer.parseInt(nText.getText());
                 int rd = Integer.parseInt(rdText.getText());
+                boolean isFinished = automataResolver.isFinished();
 
-                seeder.seed(strategy, grid, n, rd);
+                inclusion.add(grid, isFinished, n, rd);
 
                 return true;
             }
