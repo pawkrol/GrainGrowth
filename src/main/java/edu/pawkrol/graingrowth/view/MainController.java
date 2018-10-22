@@ -6,9 +6,11 @@ import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
 import edu.pawkrol.graingrowth.automata.neighbourhood.VonNeumann;
 import edu.pawkrol.graingrowth.automata.strategy.NaiveSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
+import edu.pawkrol.graingrowth.utils.GridExporter;
 import edu.pawkrol.graingrowth.utils.GridPainter;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -18,9 +20,11 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,38 +67,78 @@ public class MainController implements Initializable {
         setResizeListeners();
     }
 
+    @FXML
     public void onPlay() {
-        automataResolver.start();
+        if (automataResolver.getState() != Worker.State.READY) {
+            automataResolver.restart();
+        } else {
+            automataResolver.start();
+        }
     }
 
+    @FXML
     public void onNew() throws IOException {
         new NewGridDialog()
                 .open()
-                .ifPresent(grid -> {
-                    initAutomata(grid);
-                    initCanvasAndDrawGrid(grid);
-
-                    toolsMenu.setDisable(false);
-                    actionPanel.setDisable(false);
-                });
+                .ifPresent(this::setUpNewGrid);
     }
 
-    public void onQuit() {
-        stage.close();
-    }
-
+    @FXML
     public void onSeed() {
         new SeedDialog(automataResolver)
                 .open()
                 .ifPresent(o -> gridPainter.paint());
     }
 
+    @FXML
     public void onStrategy() {
         automataResolver.setStrategy(strategyCombo.getSelectionModel().getSelectedItem());
     }
 
+    @FXML
     public void onNeighbourhood() {
         automataResolver.setNeighbourhood(neighbourhoodCombo.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    public void onQuit() {
+        stage.close();
+    }
+
+    @FXML
+    public void onExportText() {
+        GridExporter.exportGridText(stage.getScene().getWindow(), automataResolver.getGrid());
+    }
+
+    @FXML
+    public void onImportText() {
+        Grid grid = GridExporter.importGridText(stage.getScene().getWindow());
+
+        if (grid == null) return;
+
+        setUpNewGrid(grid);
+    }
+
+    @FXML
+    public void onExportBitmap() {
+        GridExporter.exportGridBitmap(stage.getScene().getWindow(), automataResolver.getGrid());
+    }
+
+    @FXML
+    public void onImportBitmap() {
+        Grid grid = GridExporter.importGridBitmap(stage.getScene().getWindow());
+
+        if (grid == null) return;
+
+        setUpNewGrid(grid);
+    }
+
+    private void setUpNewGrid(Grid grid) {
+        initAutomata(grid);
+        initCanvasAndDrawGrid(grid);
+
+        toolsMenu.setDisable(false);
+        actionPanel.setDisable(false);
     }
 
     private void initAutomata(Grid grid) {

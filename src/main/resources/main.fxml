@@ -26,6 +26,19 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onNew" text="New" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Export">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onExportText" text="Text" />
+                        <MenuItem mnemonicParsing="false" onAction="#onExportBitmap" text="Bitmap" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Import">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onImportText" text="Text" />
+                        <MenuItem mnemonicParsing="false" onAction="#onImportBitmap" text="Bitmap" />
+                    </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onQuit" text="Quit" />
             </items>
           </Menu>
