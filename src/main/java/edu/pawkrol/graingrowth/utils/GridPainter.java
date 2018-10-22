@@ -96,16 +96,16 @@ public class GridPainter {
     private void initGrid(){
         int gw = grid.getWidth();
         int gh = grid.getHeight();
-        double cw = canvas.getWidth() / gw;
-        double ch = canvas.getHeight() / gh;
+        double cw = Math.floor(canvas.getWidth() / gw);
+        double ch = Math.floor(canvas.getHeight() / gh);
 
         xOffset = 0;
         yOffset = 0;
 
         cellSize = cw < ch? cw : ch;
 
-        yOffset = canvas.getHeight() / 2 - (gh * cellSize) / 2;
-        xOffset = canvas.getWidth() / 2 - (gw * cellSize) / 2;
+        yOffset = Math.floor(canvas.getHeight() / 2 - (gh * cellSize) / 2);
+        xOffset = Math.floor(canvas.getWidth() / 2 - (gw * cellSize) / 2);
     }
 
 }

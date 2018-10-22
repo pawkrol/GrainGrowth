@@ -28,7 +28,7 @@ public class NaiveSeedGrowth implements Strategy {
         Grid prevGrid = new Grid(grid);
 
         changed = false;
-        grid.forEach( c -> {
+        grid.forEach(c -> {
             List<Cell> neighbours = neighbourhood.neighbours(prevGrid, c);
 
             if (c.getState() == 0 && anyNeighbourIsSeed(neighbours)) {
@@ -100,4 +100,8 @@ public class NaiveSeedGrowth implements Strategy {
         return naiveSeedGrowth;
     }
 
+    @Override
+    public String toString() {
+        return "Naive Seed Growth";
+    }
 }

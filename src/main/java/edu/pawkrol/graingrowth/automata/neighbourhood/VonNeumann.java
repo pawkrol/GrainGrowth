@@ -22,4 +22,8 @@ public class VonNeumann extends Neighbourhood {
         return cells;
     }
 
+    @Override
+    public String toString() {
+        return "Von Neumann";
+    }
 }

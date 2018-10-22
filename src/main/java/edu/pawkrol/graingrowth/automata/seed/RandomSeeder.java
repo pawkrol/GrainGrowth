@@ -25,4 +25,9 @@ public class RandomSeeder implements Seeder {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Random";
+    }
+
 }

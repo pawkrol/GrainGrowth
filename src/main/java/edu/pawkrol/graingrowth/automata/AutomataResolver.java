@@ -3,12 +3,16 @@ package edu.pawkrol.graingrowth.automata;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
 import edu.pawkrol.graingrowth.automata.seed.Seeder;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 
-public class AutomataResolver {
+public class AutomataResolver extends ScheduledService<Grid> {
 
     private Strategy strategy;
     private Neighbourhood neighbourhood;
     private Grid grid;
+
+    private int iteration;
 
     public void init() throws NullPointerException {
         if (grid == null) throw new NullPointerException("Grid is null - Grid not set");
@@ -16,6 +20,7 @@ public class AutomataResolver {
         if (neighbourhood == null) throw new NullPointerException("Neighbourhood is null - Neighbourhood not set");
 
         strategy.init(grid);
+        iteration = 0;
     }
 
     public void seedWith(Seeder seeder, int... args) {
@@ -50,9 +55,30 @@ public class AutomataResolver {
         return grid;
     }
 
+    public int getIteration() {
+        return iteration;
+    }
+
+    public boolean isFinished(){
+        return strategy.isFinished();
+    }
+
     public Grid makeStep(){
         strategy.evaluate(grid, neighbourhood);
         return grid;
+    }
+
+    @Override
+    protected Task<Grid> createTask() {
+        return new Task<Grid>() {
+            @Override
+            protected Grid call() throws Exception {
+                if ( isFinished() ) cancel();
+                iteration++;
+
+                return makeStep();
+            }
+        };
     }
 
 }
