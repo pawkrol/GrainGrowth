@@ -88,7 +88,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ComboBox>
-            <Button maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="21.0" prefWidth="21.0">
+            <Button fx:id="playBtn" maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="21.0" prefWidth="21.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -103,7 +103,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="21.0" prefWidth="21.0">
+            <Button fx:id="stopBtn" disable="true" maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onStop" prefHeight="21.0" prefWidth="21.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>

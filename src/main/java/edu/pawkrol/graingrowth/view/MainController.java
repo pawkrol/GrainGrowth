@@ -14,10 +14,7 @@ import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -45,6 +42,8 @@ public class MainController implements Initializable {
     @FXML HBox actionPanel;
     @FXML TextField delayTxt;
     @FXML Label stepTxt;
+    @FXML Button playBtn;
+    @FXML Button stopBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,11 +68,22 @@ public class MainController implements Initializable {
 
     @FXML
     public void onPlay() {
+        playBtn.setDisable(true);
+        stopBtn.setDisable(false);
+
         if (automataResolver.getState() != Worker.State.READY) {
             automataResolver.restart();
         } else {
             automataResolver.start();
         }
+    }
+
+    @FXML
+    public void onStop() {
+        playBtn.setDisable(false);
+        stopBtn.setDisable(true);
+
+        automataResolver.cancel();
     }
 
     @FXML
@@ -160,6 +170,11 @@ public class MainController implements Initializable {
                 event -> Platform.runLater(() -> {
                     gridPainter.paint();
                     stepTxt.setText(String.valueOf(automataResolver.getIteration()));
+
+                    if (automataResolver.isFinished()) {
+                        playBtn.setDisable(false);
+                        stopBtn.setDisable(true);
+                    }
                 })
         );
         automataResolver.setPeriod(Duration.millis(delay));
