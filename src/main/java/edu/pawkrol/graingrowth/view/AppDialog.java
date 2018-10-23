@@ -1,7 +1,6 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.Main;
-import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Dialog;

@@ -2,9 +2,9 @@ package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
 import edu.pawkrol.graingrowth.automata.Grid;
-import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
-import edu.pawkrol.graingrowth.automata.neighbourhood.VonNeumann;
+import edu.pawkrol.graingrowth.automata.neighbourhood.*;
 import edu.pawkrol.graingrowth.automata.strategy.NaiveSeedGrowth;
+import edu.pawkrol.graingrowth.automata.strategy.ShapeControlSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
 import edu.pawkrol.graingrowth.utils.GridExporter;
 import edu.pawkrol.graingrowth.utils.GridPainter;
@@ -17,12 +17,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -41,6 +38,7 @@ public class MainController implements Initializable {
     @FXML Menu toolsMenu;
     @FXML HBox actionPanel;
     @FXML TextField delayTxt;
+    @FXML TextField probabilityTxt;
     @FXML Label stepTxt;
     @FXML Button playBtn;
     @FXML Button stopBtn;
@@ -50,12 +48,16 @@ public class MainController implements Initializable {
         gridPainter = new GridPainter(canvas);
 
         strategyCombo.getItems().addAll(
-                NaiveSeedGrowth.getInstance()
+                NaiveSeedGrowth.getInstance(),
+                ShapeControlSeedGrowth.getInstance()
         );
         strategyCombo.getSelectionModel().selectFirst();
 
         neighbourhoodCombo.getItems().addAll(
-                new VonNeumann()
+                new VonNeumann(),
+                new Moore(),
+                new NearestMoore(),
+                new FurtherMoore()
         );
         neighbourhoodCombo.getSelectionModel().selectFirst();
     }
@@ -70,6 +72,13 @@ public class MainController implements Initializable {
     public void onPlay() {
         playBtn.setDisable(true);
         stopBtn.setDisable(false);
+
+        Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
+        if (strategy instanceof ShapeControlSeedGrowth) {
+            ShapeControlSeedGrowth shapeControlSeedGrowth = (ShapeControlSeedGrowth) strategy;
+            int probability = Integer.parseInt(probabilityTxt.getText());
+            shapeControlSeedGrowth.setProbability(probability);
+        }
 
         if (automataResolver.getState() != Worker.State.READY) {
             automataResolver.restart();
@@ -109,7 +118,16 @@ public class MainController implements Initializable {
 
     @FXML
     public void onStrategy() {
-        automataResolver.setStrategy(strategyCombo.getSelectionModel().getSelectedItem());
+        Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
+        automataResolver.setStrategy(strategy);
+
+        if (strategy instanceof ShapeControlSeedGrowth) {
+            neighbourhoodCombo.setDisable(false);
+            probabilityTxt.setDisable(false);
+        } else {
+            neighbourhoodCombo.setDisable(true);
+            probabilityTxt.setDisable(false);
+        }
     }
 
     @FXML

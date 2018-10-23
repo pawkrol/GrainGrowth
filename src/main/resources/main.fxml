@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.pawkrol.graingrowth.view.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.pawkrol.graingrowth.view.MainController">
    <children>
       <MenuBar>
         <menus>
@@ -88,6 +88,16 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ComboBox>
+            <Label text="Probabilty:">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="probabilityTxt" alignment="CENTER_RIGHT" disable="true" prefWidth="50.0" promptText="10">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </TextField>
             <Button fx:id="playBtn" maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="21.0" prefWidth="21.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -123,7 +133,8 @@
       <Pane fx:id="canvasPane" prefHeight="200.0" prefWidth="777.0" style="-fx-background-color: #ddd;" VBox.vgrow="ALWAYS">
          <children>
             <Canvas fx:id="canvas" />
-         </children></Pane>
+         </children>
+      </Pane>
       <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
          <children>
             <Label text="Step:">
