@@ -22,20 +22,6 @@ public class Grid {
         initGrid();
     }
 
-    public Grid(Grid other){
-        this.width = other.width;
-        this.height = other.height;
-        this.isCyclic = other.isCyclic;
-
-        this.grid = new ArrayList<>();
-        for (Cell c: other.grid){
-            Cell nc = new Cell(c.getX(), c.getY());
-            nc.setState(c.getState());
-
-            grid.add(nc);
-        }
-    }
-
     public void forEach(Consumer<Cell> f){
         grid.forEach(f);
     }

@@ -5,7 +5,8 @@ public class Cell {
     private int x;
     private int y;
 
-    private int state;
+    private int previousState;
+    private int currentState;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -28,12 +29,23 @@ public class Cell {
         this.y = y;
     }
 
-    public int getState() {
-        return state;
+    public int getPreviousState() {
+        return previousState;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public int getCurrentState() {
+        return currentState;
     }
 
+    public void setPreviousState(int previousState) {
+        this.previousState = previousState;
+    }
+
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
+    }
+
+    public void updatePreviousState() {
+        previousState = currentState;
+    }
 }
