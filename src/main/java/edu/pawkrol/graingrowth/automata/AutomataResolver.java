@@ -1,7 +1,6 @@
 package edu.pawkrol.graingrowth.automata;
 
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
-import edu.pawkrol.graingrowth.automata.seed.Seeder;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -21,14 +20,6 @@ public class AutomataResolver extends ScheduledService<Grid> {
 
         strategy.init(grid);
         iteration = 0;
-    }
-
-    public void seedWith(Seeder seeder, int... args) {
-        seeder.seed(strategy, grid, args);
-    }
-
-    public void switchState(Cell c){
-        strategy.switchState(c);
     }
 
     public void setStrategy(Strategy strategy){

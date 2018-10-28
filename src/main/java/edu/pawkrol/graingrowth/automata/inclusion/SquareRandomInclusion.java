@@ -11,7 +11,7 @@ public class SquareRandomInclusion extends Inclusion {
             for (int h = 0; h < size; h++) {
                 Cell c = grid.getCell(x + w, y + h);
                 if (c != null) {
-                    c.setState(INCLUDED_STATE);
+                    c.setCurrentState(INCLUDED_STATE);
                 }
             }
         }

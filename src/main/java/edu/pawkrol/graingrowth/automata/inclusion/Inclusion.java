@@ -63,9 +63,9 @@ public abstract class Inclusion {
                 Cell c = grid.getCell(x, y + 1);
                 Cell d = grid.getCell(x + 1, y + 1);
 
-                if ((b != null && a.getState() != b.getState())
-                        || (c != null && a.getState() != c.getState())
-                        || (d != null && a.getState() != d.getState())) {
+                if ((b != null && a.getCurrentState() != b.getCurrentState())
+                        || (c != null && a.getCurrentState() != c.getCurrentState())
+                        || (d != null && a.getCurrentState() != d.getCurrentState())) {
                     edgeCells.add(a);
                 }
             }

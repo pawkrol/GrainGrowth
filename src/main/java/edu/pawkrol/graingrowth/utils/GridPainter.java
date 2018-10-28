@@ -3,7 +3,6 @@ package edu.pawkrol.graingrowth.utils;
 import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.FillRule;
 
 public class GridPainter {
 
@@ -57,7 +56,7 @@ public class GridPainter {
 
     private void drawCells(){
         grid.forEach(c -> {
-            gc.setFill(ColorHelper.getColor(c.getState()));
+            gc.setFill(ColorHelper.getColor(c.getCurrentState()));
             gc.fillRect(
                     xOffset + c.getX() * cellSize,
                     yOffset + c.getY() * cellSize,

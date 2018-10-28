@@ -43,7 +43,7 @@ public class GridExporter {
                     .append(SEPARATOR)
                     .append(cell.getY())
                     .append(SEPARATOR)
-                    .append(cell.getState())
+                    .append(cell.getCurrentState())
                     .append("\n")
         );
 
@@ -87,7 +87,7 @@ public class GridExporter {
                         Integer.parseInt(tokens[0]),
                         Integer.parseInt(tokens[1])
                 );
-                cell.setState(Integer.parseInt(tokens[2]));
+                cell.setCurrentState(Integer.parseInt(tokens[2]));
 
                 grid.setCell(
                         Integer.parseInt(tokens[0]),
@@ -122,7 +122,7 @@ public class GridExporter {
             int x = (int) Math.floor( c.getX() );
             int y = (int) Math.floor( c.getY() );
 
-            Color color = ColorHelper.getColor(c.getState());
+            Color color = ColorHelper.getColor(c.getCurrentState());
 
             pixelWriter.setColor(width - x - 1, height - y - 1, color);
         });
@@ -177,7 +177,7 @@ public class GridExporter {
                     }
 
                     Cell cell = new Cell(x, y);
-                    cell.setState(state);
+                    cell.setCurrentState(state);
 
                     grid.setCell(x, y, cell);
                 }

@@ -13,11 +13,11 @@ public class RadiusRandomInclusion extends Inclusion {
                     + (c.getY() - sc.getY()) * (c.getY() - sc.getY()));
 
             if (dist <= size) {
-                c.setState(INCLUDED_STATE);
+                c.setCurrentState(INCLUDED_STATE);
             }
         });
 
-        sc.setState(INCLUDED_STATE);
+        sc.setCurrentState(INCLUDED_STATE);
     }
 
     @Override

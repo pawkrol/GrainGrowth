@@ -25,15 +25,17 @@ public class NaiveSeedGrowth implements Strategy {
 
     @Override
     public void evaluate(Grid grid, Neighbourhood neighbourhood) {
-        Grid prevGrid = new Grid(grid);
-
         changed = false;
-        grid.forEach(c -> {
-            List<Cell> neighbours = neighbourhood.neighbours(prevGrid, c);
 
-            if (c.getState() == 0 && anyNeighbourIsSeed(neighbours)) {
+        grid.forEach(Cell::updatePreviousState);
+        grid.forEach(c -> {
+            if (c.getCurrentState() != 0) return;
+
+            List<Cell> neighbours = neighbourhood.neighbours(grid, c);
+
+            if (anyNeighbourIsSeed(neighbours)) {
                 int state = getMostFrequentState(neighbours);
-                c.setState(state);
+                c.setCurrentState(state);
                 changed = true;
             }
         });
@@ -45,8 +47,9 @@ public class NaiveSeedGrowth implements Strategy {
 
     @Override
     public void switchState(Cell cell) {
-        if (cell.getState() == 0) {
-            cell.setState(getNewTypes());
+        if (cell.getCurrentState() == 0) {
+            int newType = getNewTypes();
+            cell.setCurrentState(newType);
         }
     }
 
@@ -64,7 +67,7 @@ public class NaiveSeedGrowth implements Strategy {
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {
-        return neighbours.stream().anyMatch(cell -> cell.getState() > 0);
+        return neighbours.stream().anyMatch(cell -> cell.getPreviousState() > 0);
     }
 
     public int getMostFrequentState(List<Cell> neighbours) {
@@ -74,7 +77,7 @@ public class NaiveSeedGrowth implements Strategy {
         int max = 0;
         int mostState = 0;
         for (Cell c: neighbours) {
-            int state = c.getState();
+            int state = c.getPreviousState();
 
             if (state == -1) continue;
 
