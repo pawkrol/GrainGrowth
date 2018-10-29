@@ -56,7 +56,6 @@ public class MainController implements Initializable {
         neighbourhoodCombo.getItems().addAll(
                 new VonNeumann(),
                 new Moore(),
-                new NearestMoore(),
                 new FurtherMoore()
         );
         neighbourhoodCombo.getSelectionModel().selectFirst();
@@ -122,11 +121,11 @@ public class MainController implements Initializable {
         automataResolver.setStrategy(strategy);
 
         if (strategy instanceof ShapeControlSeedGrowth) {
-            neighbourhoodCombo.setDisable(false);
-            probabilityTxt.setDisable(false);
-        } else {
             neighbourhoodCombo.setDisable(true);
             probabilityTxt.setDisable(false);
+        } else {
+            neighbourhoodCombo.setDisable(false);
+            probabilityTxt.setDisable(true);
         }
     }
 

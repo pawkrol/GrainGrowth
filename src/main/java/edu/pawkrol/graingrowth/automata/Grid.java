@@ -10,8 +10,6 @@ public class Grid {
     private int width;
     private int height;
 
-    private int maxPossibleStates;
-
     private boolean isCyclic;
 
     public Grid(int width, int height, boolean isCyclic) {
@@ -48,14 +46,6 @@ public class Grid {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public int getMaxPossibleStates() {
-        return maxPossibleStates;
-    }
-
-    public void setMaxPossibleStates(int maxPossibleStates) {
-        this.maxPossibleStates = maxPossibleStates;
     }
 
     public boolean isCyclic() {

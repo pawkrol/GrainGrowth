@@ -5,11 +5,9 @@ import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
 
 import java.util.List;
-import java.util.Random;
 
-public class NaiveSeedGrowth implements Strategy {
+public class NaiveSeedGrowth extends Strategy {
 
-    private int types;
     private boolean finished;
     private boolean changed;
 
@@ -41,8 +39,6 @@ public class NaiveSeedGrowth implements Strategy {
         });
 
         if (!changed) finished = true;
-
-        grid.setMaxPossibleStates(types);
     }
 
     @Override
@@ -58,43 +54,12 @@ public class NaiveSeedGrowth implements Strategy {
         return finished;
     }
 
-    public int getTypes() {
-        return types;
-    }
-
     public int getNewTypes() {
         return ++types;
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {
         return neighbours.stream().anyMatch(cell -> cell.getPreviousState() > 0);
-    }
-
-    public int getMostFrequentState(List<Cell> neighbours) {
-        int[] freq = new int[types + 1];
-        Random random = new Random();
-
-        int max = 0;
-        int mostState = 0;
-        for (Cell c: neighbours) {
-            int state = c.getPreviousState();
-
-            if (state == -1) continue;
-
-            freq[state]++;
-
-            if (freq[state] > max && state != 0) {
-                max = freq[state];
-                mostState = state;
-            } else if (freq[state] == max && state != 0) {
-                if (random.nextDouble() > .5) {
-                    max = freq[state];
-                    mostState = state;
-                }
-            }
-        }
-
-        return mostState;
     }
 
     public static NaiveSeedGrowth getInstance(){

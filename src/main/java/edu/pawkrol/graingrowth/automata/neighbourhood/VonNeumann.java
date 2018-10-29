@@ -3,13 +3,15 @@ package edu.pawkrol.graingrowth.automata.neighbourhood;
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VonNeumann extends Neighbourhood {
 
-    private List<Cell> cells = new ArrayList<>();
-
+    /**
+     * .#.
+     * #0#
+     * .#.
+     */
     @Override
     public List<Cell> neighbours(Grid grid, Cell cell) {
         cells.clear();
