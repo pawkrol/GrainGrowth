@@ -87,6 +87,8 @@ public class ShapeControlSeedGrowth extends Strategy {
         });
 
         if (!changed) finished = true;
+
+        grid.setMaxPossibleStates(types);
     }
 
     @Override

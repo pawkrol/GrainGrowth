@@ -22,6 +22,14 @@ public abstract class Strategy {
         return false;
     }
 
+    public int getTypes() {
+        return types;
+    }
+
+    public void setTypes(int types) {
+        this.types = types;
+    }
+
     protected int getMostFrequentState(List<Cell> neighbours) {
         return getMostFrequentStateInBoundary(neighbours, 0, neighbours.size());
     }

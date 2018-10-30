@@ -17,7 +17,7 @@ public class NaiveSeedGrowth extends Strategy {
 
     @Override
     public void init(Grid grid) {
-        types = 0;
+        this.types = grid.getMaxPossibleStates();
         finished = false;
     }
 
@@ -39,6 +39,8 @@ public class NaiveSeedGrowth extends Strategy {
         });
 
         if (!changed) finished = true;
+
+        grid.setMaxPossibleStates(types);
     }
 
     @Override
@@ -52,6 +54,10 @@ public class NaiveSeedGrowth extends Strategy {
     @Override
     public boolean isFinished() {
         return finished;
+    }
+
+    public void setNewTypes(int types) {
+        this.types = types;
     }
 
     public int getNewTypes() {

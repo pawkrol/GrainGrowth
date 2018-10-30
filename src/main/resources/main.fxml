@@ -88,16 +88,6 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ComboBox>
-            <Label text="Probabilty:">
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-            </Label>
-            <TextField fx:id="probabilityTxt" alignment="CENTER_RIGHT" disable="true" prefWidth="50.0" promptText="10">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </TextField>
             <Button fx:id="playBtn" maxHeight="21.0" maxWidth="21.0" minHeight="21.0" minWidth="21.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="21.0" prefWidth="21.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">

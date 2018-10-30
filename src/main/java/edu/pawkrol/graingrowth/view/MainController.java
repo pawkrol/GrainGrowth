@@ -3,6 +3,7 @@ package edu.pawkrol.graingrowth.view;
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.*;
+import edu.pawkrol.graingrowth.automata.strategy.DualPhaseGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.NaiveSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.ShapeControlSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
@@ -38,7 +39,6 @@ public class MainController implements Initializable {
     @FXML Menu toolsMenu;
     @FXML HBox actionPanel;
     @FXML TextField delayTxt;
-    @FXML TextField probabilityTxt;
     @FXML Label stepTxt;
     @FXML Button playBtn;
     @FXML Button stopBtn;
@@ -74,9 +74,9 @@ public class MainController implements Initializable {
 
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
         if (strategy instanceof ShapeControlSeedGrowth) {
-            ShapeControlSeedGrowth shapeControlSeedGrowth = (ShapeControlSeedGrowth) strategy;
-            int probability = Integer.parseInt(probabilityTxt.getText());
-            shapeControlSeedGrowth.setProbability(probability);
+            new ParamDialog("Set probability", "Probability")
+                    .open()
+                    .ifPresent(((ShapeControlSeedGrowth) strategy)::setProbability);
         }
 
         if (automataResolver.getState() != Worker.State.READY) {
@@ -122,10 +122,8 @@ public class MainController implements Initializable {
 
         if (strategy instanceof ShapeControlSeedGrowth) {
             neighbourhoodCombo.setDisable(true);
-            probabilityTxt.setDisable(false);
         } else {
             neighbourhoodCombo.setDisable(false);
-            probabilityTxt.setDisable(true);
         }
     }
 
