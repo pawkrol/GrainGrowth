@@ -41,7 +41,6 @@ public class MainController implements Initializable {
     @FXML ComboBox<Neighbourhood> neighbourhoodCombo;
     @FXML Menu toolsMenu;
     @FXML HBox actionPanel;
-    @FXML TextField delayTxt;
     @FXML Label stepTxt;
     @FXML Button playBtn;
     @FXML Button stopBtn;
@@ -156,6 +155,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    public void onOptions() {
+        new ParamDialog("Options", "Step delay [ms]")
+                .open()
+                .ifPresent(delay -> automataResolver.setPeriod(Duration.millis(delay)));
+    }
+
+    @FXML
     public void onStrategy() {
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
 
@@ -211,8 +217,6 @@ public class MainController implements Initializable {
     }
 
     private void initAutomata(Grid grid) {
-        int delay = Integer.parseInt(delayTxt.getText());
-
         automataResolver.setGrid(grid);
         automataResolver.setOnSucceeded(
                 event -> Platform.runLater(() -> {
@@ -224,7 +228,6 @@ public class MainController implements Initializable {
                     }
                 })
         );
-        automataResolver.setPeriod(Duration.millis(delay));
         automataResolver.init();
     }
 
