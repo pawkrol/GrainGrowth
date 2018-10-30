@@ -1,10 +1,8 @@
 package edu.pawkrol.graingrowth.view;
 
-import edu.pawkrol.graingrowth.automata.AutomataResolver;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.seed.RandomSeeder;
 import edu.pawkrol.graingrowth.automata.seed.Seeder;
-import edu.pawkrol.graingrowth.automata.strategy.Strategy;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -13,12 +11,12 @@ import java.util.Optional;
 
 public class SeedDialog extends AppDialog<Boolean> {
 
-    private AutomataResolver automataResolver;
+    private Grid grid;
 
-    SeedDialog(AutomataResolver automataResolver) {
+    SeedDialog(Grid grid) {
         super("seed-dialog.fxml");
 
-        this.automataResolver = automataResolver;
+        this.grid = grid;
     }
 
     @Override
@@ -40,14 +38,12 @@ public class SeedDialog extends AppDialog<Boolean> {
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
-                Strategy strategy = automataResolver.getStrategy();
-                Grid grid = automataResolver.getGrid();
                 Seeder seeder = seederCombo.getSelectionModel().getSelectedItem();
 
                 int n = Integer.parseInt(nText.getText());
                 int rd = Integer.parseInt(rdText.getText());
 
-                seeder.seed(strategy, grid, n, rd);
+                seeder.seed(grid, n, rd);
 
                 return true;
             }

@@ -5,7 +5,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class NewGridDialog extends AppDialog<Grid> {

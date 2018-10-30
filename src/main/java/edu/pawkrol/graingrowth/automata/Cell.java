@@ -1,5 +1,7 @@
 package edu.pawkrol.graingrowth.automata;
 
+import java.util.Objects;
+
 public class Cell {
 
     private int x;
@@ -48,4 +50,19 @@ public class Cell {
     public void updatePreviousState() {
         previousState = currentState;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return x == cell.x &&
+                y == cell.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
 }

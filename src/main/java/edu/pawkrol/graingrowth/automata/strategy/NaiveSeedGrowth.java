@@ -16,8 +16,7 @@ public class NaiveSeedGrowth extends Strategy {
     private NaiveSeedGrowth() {}
 
     @Override
-    public void init(Grid grid) {
-        types = 0;
+    public void init() {
         finished = false;
     }
 
@@ -42,20 +41,8 @@ public class NaiveSeedGrowth extends Strategy {
     }
 
     @Override
-    public void switchState(Cell cell) {
-        if (cell.getCurrentState() == 0) {
-            int newType = getNewTypes();
-            cell.setCurrentState(newType);
-        }
-    }
-
-    @Override
     public boolean isFinished() {
         return finished;
-    }
-
-    public int getNewTypes() {
-        return ++types;
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {

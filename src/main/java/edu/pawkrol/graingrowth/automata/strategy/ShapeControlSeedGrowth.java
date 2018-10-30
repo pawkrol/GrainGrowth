@@ -30,12 +30,12 @@ public class ShapeControlSeedGrowth extends Strategy {
     }
 
     @Override
-    public void init(Grid grid) {
-        types = 0;
+    public void init() {
         finished = false;
     }
 
     //Passed neighbourhood is not used in that case
+    //SLOW...
     @Override
     public void evaluate(Grid grid, Neighbourhood n) {
         Random random = new Random();
@@ -90,20 +90,10 @@ public class ShapeControlSeedGrowth extends Strategy {
     }
 
     @Override
-    public void switchState(Cell cell) {
-        if (cell.getCurrentState() == 0) {
-            cell.setCurrentState(getNewTypes());
-        }
-    }
-
-    @Override
     public boolean isFinished() {
         return finished;
     }
 
-    public int getNewTypes() {
-        return ++types;
-    }
 
     public int getProbability() {
         return probability;

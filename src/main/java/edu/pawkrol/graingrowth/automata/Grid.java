@@ -11,6 +11,7 @@ public class Grid {
     private int height;
 
     private boolean isCyclic;
+    private int numberOfStates;
 
     public Grid(int width, int height, boolean isCyclic) {
         this.width = width;
@@ -58,6 +59,14 @@ public class Grid {
 
     public int getSize(){
         return width * height;
+    }
+
+    public int getNumberOfStates() {
+        return numberOfStates;
+    }
+
+    public void setNumberOfStates(int numberOfStates) {
+        this.numberOfStates = numberOfStates;
     }
 
     public void setCell(int x, int y, Cell cell){

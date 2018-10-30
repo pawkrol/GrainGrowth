@@ -1,8 +1,12 @@
 package edu.pawkrol.graingrowth.utils;
 
+import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GridPainter {
 
@@ -15,6 +19,10 @@ public class GridPainter {
     private double cellSize;
 
     private boolean gridOverlayVisible = false;
+    private boolean gridSelectionEnabled = false;
+
+    private int hoveredState = -1;
+    private List<Integer> selectedStates = new ArrayList<>();
 
     public GridPainter(Canvas canvas) {
         this.canvas = canvas;
@@ -54,8 +62,34 @@ public class GridPainter {
         paint();
     }
 
+    public boolean isGridSelectionEnabled() {
+        return gridSelectionEnabled;
+    }
+
+    public Observer<Integer> setGridSelectionEnabled(boolean gridSelectionEnabled) {
+        this.gridSelectionEnabled = gridSelectionEnabled;
+        this.selectedStates.clear();
+
+        if (gridSelectionEnabled) {
+            return setGrainSelectorListener();
+        }
+
+        this.hoveredState = -1;
+        paint();
+
+        return null;
+    }
+
     private void drawCells(){
         grid.forEach(c -> {
+            double alpha = 1;
+            if (hoveredState > 0 || !selectedStates.isEmpty()) {
+                int state = c.getCurrentState();
+                boolean isSelected = selectedStates.contains(state) || c.getCurrentState() == hoveredState;
+                alpha = isSelected? alpha : 0.25;
+            }
+
+            gc.setGlobalAlpha(alpha);
             gc.setFill(ColorHelper.getColor(c.getCurrentState()));
             gc.fillRect(
                     xOffset + c.getX() * cellSize,
@@ -89,7 +123,7 @@ public class GridPainter {
     }
 
     private double snap(double y) {
-        return y;//((int) y) + .5;
+        return ((int) y) + .5;
     }
 
     private void initGrid(){
@@ -105,6 +139,58 @@ public class GridPainter {
 
         yOffset = Math.floor(canvas.getHeight() / 2 - (gh * cellSize) / 2);
         xOffset = Math.floor(canvas.getWidth() / 2 - (gw * cellSize) / 2);
+    }
+
+    private Observer<Integer> setGrainSelectorListener() {
+        canvas.setOnMouseMoved(event -> {
+            if (!gridSelectionEnabled) return;
+
+            double x = event.getX();
+            double y = event.getY();
+
+            Cell c = getCellFromCoords(x, y);
+
+            if (c == null) {
+                hoveredState = -1;
+                paint();
+                return;
+            }
+
+            if (hoveredState != c.getCurrentState()) {
+                hoveredState = c.getCurrentState();
+                paint();
+            }
+        });
+
+        Observer<Integer> observer = new Observer<>();
+        canvas.setOnMouseClicked(event -> {
+            if (!gridSelectionEnabled) return;
+
+            double x = event.getX();
+            double y = event.getY();
+
+            Cell c = getCellFromCoords(x, y);
+            if (c != null) {
+                if (selectedStates.contains(c.getCurrentState())) return;
+
+                selectedStates.add(c.getCurrentState());
+                observer.emit(c.getCurrentState());
+            }
+        });
+
+        return observer;
+    }
+
+    private Cell getCellFromCoords(double x, double y) {
+        if ((x >= xOffset && x < xOffset + grid.getWidth() * cellSize)
+                && (y >= yOffset && y < yOffset + grid.getHeight() * cellSize)) {
+            x = Math.floor((x - xOffset) / cellSize);
+            y = Math.floor((y - yOffset) / cellSize);
+
+            return grid.getCell((int) x, (int) y);
+        }
+
+        return null;
     }
 
 }

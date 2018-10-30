@@ -13,17 +13,13 @@ public class AutomataResolver extends ScheduledService<Grid> {
 
     private int iteration;
 
-    public void init() throws NullPointerException {
-        if (grid == null) throw new NullPointerException("Grid is null - Grid not set");
-        if (strategy == null) throw new NullPointerException("Strategy is null - Strategy not set");
-        if (neighbourhood == null) throw new NullPointerException("Neighbourhood is null - Neighbourhood not set");
-
-        strategy.init(grid);
+    public void init() {
         iteration = 0;
     }
 
     public void setStrategy(Strategy strategy){
         this.strategy = strategy;
+        this.strategy.init();
     }
 
     public Strategy getStrategy() {

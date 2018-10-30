@@ -69,28 +69,31 @@ public class MainController implements Initializable {
 
     @FXML
     public void onPlay() {
-        playBtn.setDisable(true);
-        stopBtn.setDisable(false);
+        disableControls(true);
 
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
+        Neighbourhood neighbourhood = neighbourhoodCombo.getSelectionModel().getSelectedItem();
+
+        automataResolver.setStrategy(strategy);
+        automataResolver.setNeighbourhood(neighbourhood);
+
         if (strategy instanceof ShapeControlSeedGrowth) {
-            ShapeControlSeedGrowth shapeControlSeedGrowth = (ShapeControlSeedGrowth) strategy;
-            int probability = Integer.parseInt(probabilityTxt.getText());
-            shapeControlSeedGrowth.setProbability(probability);
+            new ParamDialog("Set probability", "Probability")
+                    .open()
+                    .ifPresent(((ShapeControlSeedGrowth) strategy)::setProbability);
         }
 
         if (automataResolver.getState() != Worker.State.READY) {
             automataResolver.restart();
         } else {
+            automataResolver.init();
             automataResolver.start();
         }
     }
 
     @FXML
     public void onStop() {
-        playBtn.setDisable(false);
-        stopBtn.setDisable(true);
-
+        disableControls(false);
         automataResolver.cancel();
     }
 
@@ -103,7 +106,7 @@ public class MainController implements Initializable {
 
     @FXML
     public void onSeed() {
-        new SeedDialog(automataResolver)
+        new SeedDialog(automataResolver.getGrid())
                 .open()
                 .ifPresent(o -> gridPainter.paint());
     }
@@ -118,14 +121,11 @@ public class MainController implements Initializable {
     @FXML
     public void onStrategy() {
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
-        automataResolver.setStrategy(strategy);
 
         if (strategy instanceof ShapeControlSeedGrowth) {
             neighbourhoodCombo.setDisable(true);
-            probabilityTxt.setDisable(false);
         } else {
             neighbourhoodCombo.setDisable(false);
-            probabilityTxt.setDisable(true);
         }
     }
 
@@ -147,7 +147,6 @@ public class MainController implements Initializable {
     @FXML
     public void onImportText() {
         Grid grid = GridExporter.importGridText(stage.getScene().getWindow());
-
         if (grid == null) return;
 
         setUpNewGrid(grid);
@@ -161,7 +160,6 @@ public class MainController implements Initializable {
     @FXML
     public void onImportBitmap() {
         Grid grid = GridExporter.importGridBitmap(stage.getScene().getWindow());
-
         if (grid == null) return;
 
         setUpNewGrid(grid);
@@ -173,24 +171,22 @@ public class MainController implements Initializable {
 
         toolsMenu.setDisable(false);
         actionPanel.setDisable(false);
+//
+//        gridPainter.setGridSelectionEnabled(true)
+//                .observe(System.out::println);
     }
 
     private void initAutomata(Grid grid) {
-        Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
-        Neighbourhood neighbourhood = neighbourhoodCombo.getSelectionModel().getSelectedItem();
         int delay = Integer.parseInt(delayTxt.getText());
 
         automataResolver.setGrid(grid);
-        automataResolver.setStrategy(strategy);
-        automataResolver.setNeighbourhood(neighbourhood);
         automataResolver.setOnSucceeded(
                 event -> Platform.runLater(() -> {
                     gridPainter.paint();
                     stepTxt.setText(String.valueOf(automataResolver.getIteration()));
 
                     if (automataResolver.isFinished()) {
-                        playBtn.setDisable(false);
-                        stopBtn.setDisable(true);
+                        disableControls(false);
                     }
                 })
         );
@@ -220,6 +216,12 @@ public class MainController implements Initializable {
         canvas.setHeight(canvasPane.getHeight());
 
         gridPainter.onResize();
+    }
+
+    private void disableControls(boolean disabled) {
+        playBtn.setDisable(disabled);
+        stopBtn.setDisable(!disabled);
+        toolsMenu.setDisable(disabled);
     }
 
 }

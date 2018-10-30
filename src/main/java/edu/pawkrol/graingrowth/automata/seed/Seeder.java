@@ -5,6 +5,6 @@ import edu.pawkrol.graingrowth.automata.strategy.Strategy;
 
 public interface Seeder {
 
-    void seed(Strategy strategy, Grid grid, int... args);
+    void seed(Grid grid, int... args);
 
 }

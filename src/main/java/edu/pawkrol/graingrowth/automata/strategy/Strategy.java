@@ -6,54 +6,43 @@ import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class Strategy {
 
-    private Random random = new Random();
-
-    protected int types;
-
-    public abstract void init(Grid grid);
+    public abstract void init();
     public abstract void evaluate(Grid grid, Neighbourhood neighbourhood);
-    public abstract void switchState(Cell cell);
 
     public boolean isFinished() {
         return false;
     }
 
-    protected int getMostFrequentState(List<Cell> neighbours) {
-        return getMostFrequentStateInBoundary(neighbours, 0, neighbours.size());
+    protected Map<Integer, Long> getStatesFrequency(List<Cell> neighbours) {
+        return neighbours.stream()
+                .map(Cell::getPreviousState)
+                .filter(s -> s > 0)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    protected int getMostFrequentStateInBoundary(List<Cell> neighbours, int lower, int upper) {
-        int[] freq = new int[types + 1];
+    protected int getMostFrequentState(List<Cell> neighbours) {
+        return getStatesFrequency(neighbours)
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(0);
+    }
 
-        int max = 0;
-        int mostState = 0;
-        for (Cell c: neighbours) {
-            int state = c.getPreviousState();
-
-            if (state == -1) continue;
-
-            freq[state]++;
-
-            if (freq[state] > max && state != 0) {
-                max = freq[state];
-                mostState = state;
-            } else if (freq[state] == max && state != 0) {
-                if (random.nextDouble() > .5) {
-                    max = freq[state];
-                    mostState = state;
-                }
-            }
-        }
-
-        if (freq[mostState] >= lower && freq[mostState] <= upper) {
-            return mostState;
-        } else {
-            return 0;
-        }
+    protected int getMostFrequentStateInBoundary(List<Cell> neighbours, long lower, long upper) {
+        return getStatesFrequency(neighbours)
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .filter(e -> e.getValue() >= lower && e.getValue() <= upper)
+                .map(Map.Entry::getKey)
+                .orElse(0);
     }
 
 }
