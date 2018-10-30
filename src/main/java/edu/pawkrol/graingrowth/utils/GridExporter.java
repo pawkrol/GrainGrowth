@@ -3,6 +3,7 @@ package edu.pawkrol.graingrowth.utils;
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -119,8 +120,8 @@ public class GridExporter {
         PixelWriter pixelWriter = image.getPixelWriter();
 
         grid.forEach(c -> {
-            int x = (int) Math.floor( c.getX() );
-            int y = (int) Math.floor( c.getY() );
+            int x = (int) Math.floor( grid.getWidth() - 1 - c.getX() );
+            int y = (int) Math.floor( grid.getHeight() - 1 - c.getY() );
 
             Color color = ColorHelper.getColor(c.getCurrentState());
 
@@ -149,6 +150,7 @@ public class GridExporter {
         Grid grid;
 
         HashMap<Color, Integer> stateMap = new HashMap<>();
+        stateMap.put(Color.color(.4, .4, .4), -2);
         stateMap.put(Color.BLACK, -1);
         stateMap.put(Color.WHITE, 0);
         int lastState = 0;
