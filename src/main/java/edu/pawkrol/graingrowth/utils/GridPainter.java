@@ -11,6 +11,8 @@ import java.util.List;
 
 public class GridPainter {
 
+    private static final int HOVERED_STATE = -3;
+
     private Canvas canvas;
     private GraphicsContext gc;
     private Grid grid;
@@ -22,7 +24,7 @@ public class GridPainter {
     private boolean gridOverlayVisible = false;
     private boolean gridSelectionEnabled = false;
 
-    private int hoveredState = -1;
+    private int hoveredState = HOVERED_STATE;
     private List<Integer> selectedStates = new ArrayList<>();
 
     public GridPainter(Canvas canvas) {
@@ -70,12 +72,12 @@ public class GridPainter {
     public Observer<Integer> setGridSelectionEnabled(boolean gridSelectionEnabled) {
         this.gridSelectionEnabled = gridSelectionEnabled;
         this.selectedStates.clear();
+        this.hoveredState = HOVERED_STATE;
 
         if (gridSelectionEnabled) {
             return setGrainSelectorListener();
         }
 
-        this.hoveredState = -1;
         paint();
 
         return null;
@@ -84,7 +86,7 @@ public class GridPainter {
     private void drawCells(){
         grid.forEach(c -> {
             double alpha = 1;
-            if (hoveredState > 0 || !selectedStates.isEmpty()) {
+            if (hoveredState == -2 || hoveredState > 0 || !selectedStates.isEmpty()) {
                 int state = c.getCurrentState();
                 boolean isSelected = selectedStates.contains(state) || c.getCurrentState() == hoveredState;
                 alpha = isSelected? alpha : 0.25;
@@ -152,7 +154,7 @@ public class GridPainter {
             Cell c = getCellFromCoords(x, y);
 
             if (c == null) {
-                hoveredState = -1;
+                hoveredState = HOVERED_STATE;
                 paint();
                 return;
             }
