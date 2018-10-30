@@ -14,6 +14,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -46,7 +47,12 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#onSeed" text="Seed" />
                   <MenuItem mnemonicParsing="false" onAction="#onInclusion" text="Inclusion" />
-                  <MenuItem mnemonicParsing="false" onAction="#onGrainSelector" text="Grain selector" />
+                  <Menu mnemonicParsing="false" text="Grain selector">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onManualGrainSelector" text="Manual" />
+                        <MenuItem mnemonicParsing="false" onAction="#onRandomGrainSelector" text="Random" />
+                    </items>
+                  </Menu>
               </items>
             </Menu>
         </menus>
@@ -126,19 +132,23 @@
             <Canvas fx:id="canvas" />
          </children>
       </Pane>
-      <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
+      <AnchorPane prefHeight="25.0" prefWidth="200.0">
          <children>
-            <Label text="Step:">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="stepTxt" text="0">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </Label>
+            <HBox alignment="CENTER_LEFT" layoutY="1.0" prefHeight="25.0" prefWidth="200.0">
+               <children>
+                  <Label text="Step:">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="stepTxt" text="0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </AnchorPane>
    </children>
 </VBox>

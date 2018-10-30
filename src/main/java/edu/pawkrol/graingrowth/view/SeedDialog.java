@@ -1,8 +1,8 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.Grid;
-import edu.pawkrol.graingrowth.automata.seed.RandomSeeder;
-import edu.pawkrol.graingrowth.automata.seed.Seeder;
+import edu.pawkrol.graingrowth.automata.tools.seed.RandomSeeder;
+import edu.pawkrol.graingrowth.automata.tools.seed.Seeder;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;

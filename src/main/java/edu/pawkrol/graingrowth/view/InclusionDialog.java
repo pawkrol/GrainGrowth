@@ -2,9 +2,9 @@ package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
 import edu.pawkrol.graingrowth.automata.Grid;
-import edu.pawkrol.graingrowth.automata.inclusion.Inclusion;
-import edu.pawkrol.graingrowth.automata.inclusion.RadiusRandomInclusion;
-import edu.pawkrol.graingrowth.automata.inclusion.SquareRandomInclusion;
+import edu.pawkrol.graingrowth.automata.tools.inclusion.Inclusion;
+import edu.pawkrol.graingrowth.automata.tools.inclusion.RadiusRandomInclusion;
+import edu.pawkrol.graingrowth.automata.tools.inclusion.SquareRandomInclusion;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;

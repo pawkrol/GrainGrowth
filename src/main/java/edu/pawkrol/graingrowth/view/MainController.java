@@ -1,6 +1,7 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
+import edu.pawkrol.graingrowth.automata.tools.GrainSelector;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.*;
 import edu.pawkrol.graingrowth.automata.strategy.NaiveSeedGrowth;
@@ -15,12 +16,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -38,7 +42,6 @@ public class MainController implements Initializable {
     @FXML Menu toolsMenu;
     @FXML HBox actionPanel;
     @FXML TextField delayTxt;
-    @FXML TextField probabilityTxt;
     @FXML Label stepTxt;
     @FXML Button playBtn;
     @FXML Button stopBtn;
@@ -119,6 +122,40 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    public void onManualGrainSelector() {
+        disableControls(true);
+
+        List<Integer> states = new ArrayList<>();
+        gridPainter.setGridSelectionEnabled(true)
+                .observe(states::add);
+
+        canvasPane.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                disableControls(false);
+                gridPainter.setGridSelectionEnabled(false);
+
+                Grid grid = automataResolver.getGrid();
+                GrainSelector.keepAndLockSelectedGrains(grid, states);
+                gridPainter.paint();
+
+                canvasPane.setOnMouseClicked(null);
+            }
+        });
+    }
+
+    @FXML
+    public void onRandomGrainSelector() {
+        new ParamDialog("Random grain selector", "Number of grains")
+                .open()
+                .ifPresent(n -> {
+                    Grid grid = automataResolver.getGrid();
+                    List<Integer> states = GrainSelector.selectRandomGrains(grid, n);
+                    GrainSelector.keepAndLockSelectedGrains(grid, states);
+                    gridPainter.paint();
+                });
+    }
+
+    @FXML
     public void onStrategy() {
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
 
@@ -171,9 +208,6 @@ public class MainController implements Initializable {
 
         toolsMenu.setDisable(false);
         actionPanel.setDisable(false);
-//
-//        gridPainter.setGridSelectionEnabled(true)
-//                .observe(System.out::println);
     }
 
     private void initAutomata(Grid grid) {

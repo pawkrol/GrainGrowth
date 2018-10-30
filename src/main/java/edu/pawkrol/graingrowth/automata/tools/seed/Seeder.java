@@ -1,7 +1,6 @@
-package edu.pawkrol.graingrowth.automata.seed;
+package edu.pawkrol.graingrowth.automata.tools.seed;
 
 import edu.pawkrol.graingrowth.automata.Grid;
-import edu.pawkrol.graingrowth.automata.strategy.Strategy;
 
 public interface Seeder {
 

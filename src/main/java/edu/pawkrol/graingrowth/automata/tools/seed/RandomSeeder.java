@@ -1,4 +1,4 @@
-package edu.pawkrol.graingrowth.automata.seed;
+package edu.pawkrol.graingrowth.automata.tools.seed;
 
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
@@ -16,12 +16,15 @@ public class RandomSeeder implements Seeder {
 
         int x, y;
         Cell c;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n;) {
             x = random.nextInt(grid.getWidth());
             y = random.nextInt(grid.getHeight());
             c = grid.getCell(x, y);
 
-            c.setCurrentState(++numberOfStates);
+            if (c.getCurrentState() == 0) {
+                c.setCurrentState(++numberOfStates);
+                i++;
+            }
         }
 
         grid.setNumberOfStates(numberOfStates);

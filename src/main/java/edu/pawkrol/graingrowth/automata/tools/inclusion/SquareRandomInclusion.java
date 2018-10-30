@@ -1,4 +1,4 @@
-package edu.pawkrol.graingrowth.automata.inclusion;
+package edu.pawkrol.graingrowth.automata.tools.inclusion;
 
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;

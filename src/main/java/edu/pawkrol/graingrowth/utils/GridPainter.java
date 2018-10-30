@@ -4,6 +4,7 @@ import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,6 +165,7 @@ public class GridPainter {
 
         Observer<Integer> observer = new Observer<>();
         canvas.setOnMouseClicked(event -> {
+            if (event.getButton() != MouseButton.PRIMARY) return;
             if (!gridSelectionEnabled) return;
 
             double x = event.getX();
