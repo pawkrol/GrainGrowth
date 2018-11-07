@@ -1,12 +1,13 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
-import edu.pawkrol.graingrowth.automata.tools.GrainSelector;
+import edu.pawkrol.graingrowth.automata.tools.GrainTools;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.*;
 import edu.pawkrol.graingrowth.automata.strategy.NaiveSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.ShapeControlSeedGrowth;
 import edu.pawkrol.graingrowth.automata.strategy.Strategy;
+import edu.pawkrol.graingrowth.utils.SingleAction;
 import edu.pawkrol.graingrowth.utils.GridExporter;
 import edu.pawkrol.graingrowth.utils.GridPainter;
 import javafx.application.Platform;
@@ -16,14 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -32,6 +32,8 @@ public class MainController implements Initializable {
     private final AutomataResolver automataResolver = new AutomataResolver();
 
     private GridPainter gridPainter;
+
+    private SingleAction doneAction;
 
     private Stage stage;
 
@@ -44,6 +46,7 @@ public class MainController implements Initializable {
     @FXML Label stepTxt;
     @FXML Button playBtn;
     @FXML Button stopBtn;
+    @FXML Button doneBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -100,6 +103,12 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    public void onDone() {
+        if (doneAction == null) return;
+        doneAction.onDone();
+    }
+
+    @FXML
     public void onNew() {
         new NewGridDialog()
                 .open()
@@ -124,22 +133,23 @@ public class MainController implements Initializable {
     public void onManualGrainSelector() {
         disableControls(true);
 
-        List<Integer> states = new ArrayList<>();
+        List<Integer> states = new LinkedList<>();
         gridPainter.setGridSelectionEnabled(true)
                 .observe(states::add);
 
-        canvasPane.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                disableControls(false);
-                gridPainter.setGridSelectionEnabled(false);
+        doneBtn.setVisible(true);
+        doneAction = () -> {
+            Grid grid = automataResolver.getGrid();
+            new GrainDialog(grid, states)
+                    .open()
+                    .ifPresent(ok -> {
+                        if (!ok) return;
 
-                Grid grid = automataResolver.getGrid();
-                GrainSelector.keepAndLockSelectedGrains(grid, states);
-                gridPainter.paint();
-
-                canvasPane.setOnMouseClicked(null);
-            }
-        });
+                        disableControls(false);
+                        gridPainter.setGridSelectionEnabled(false);
+                        doneBtn.setVisible(false);
+                    });
+        };
     }
 
     @FXML
@@ -148,8 +158,26 @@ public class MainController implements Initializable {
                 .open()
                 .ifPresent(n -> {
                     Grid grid = automataResolver.getGrid();
-                    List<Integer> states = GrainSelector.selectRandomGrains(grid, n);
-                    GrainSelector.keepAndLockSelectedGrains(grid, states);
+                    List<Integer> states = GrainTools.selectRandomGrains(grid, n);
+
+                    new GrainDialog(grid, states)
+                            .open()
+                            .ifPresent(ok -> {
+                                if (!ok) return;
+                                gridPainter.paint();
+                            });
+                });
+    }
+
+    @FXML
+    public void onAllGrainSelector() {
+        Grid grid = automataResolver.getGrid();
+        List<Integer> states = GrainTools.selectAllGrains(grid);
+
+        new GrainDialog(grid, states)
+                .open()
+                .ifPresent(ok -> {
+                    if (!ok) return;
                     gridPainter.paint();
                 });
     }

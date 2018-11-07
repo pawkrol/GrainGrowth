@@ -10,12 +10,18 @@ public class ParamDialog extends AppDialog<Integer>{
 
     private String title;
     private String paramName;
+    private Number defaultValue;
 
     public ParamDialog(String title, String paramName) {
+        this(title, paramName, 0);
+    }
+
+    public ParamDialog(String title, String paramName, Number defaultValue) {
         super("param-dialog.fxml");
 
         this.title = title;
         this.paramName = paramName;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -29,6 +35,7 @@ public class ParamDialog extends AppDialog<Integer>{
         TextField paramText = (TextField) dialog.getDialogPane().lookup("#paramText");
         Label paramLabel = (Label) dialog.getDialogPane().lookup("#paramLabel");
 
+        paramText.setText(defaultValue.toString());
         paramLabel.setText(paramName);
 
         dialog.setResultConverter(dialogButton -> {

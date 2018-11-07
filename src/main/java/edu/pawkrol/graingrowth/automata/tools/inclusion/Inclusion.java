@@ -2,6 +2,8 @@ package edu.pawkrol.graingrowth.automata.tools.inclusion;
 
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
+import edu.pawkrol.graingrowth.automata.neighbourhood.Moore;
+import edu.pawkrol.graingrowth.automata.tools.GrainTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public abstract class Inclusion {
     }
 
     private void addOnEdges(Grid grid, int n, int size) {
-        List<Cell> edgeCells = getEdgeCells(grid);
+        List<Cell> edgeCells = GrainTools.getGrainEdgeCells(grid);
 
         for (int i = 0; i < n; i++) {
             int idx = random.nextInt(edgeCells.size());
@@ -51,27 +53,6 @@ public abstract class Inclusion {
 
             addInclusion(grid, x, y, size);
         }
-    }
-
-    private List<Cell> getEdgeCells(Grid grid) {
-        List<Cell> edgeCells = new ArrayList<>();
-
-        for (int y = 0; y < grid.getHeight(); y++) {
-            for (int x = 0; x < grid.getWidth(); x++) {
-                Cell a = grid.getCell(x, y);
-                Cell b = grid.getCell(x + 1, y);
-                Cell c = grid.getCell(x, y + 1);
-                Cell d = grid.getCell(x + 1, y + 1);
-
-                if ((b != null && a.getCurrentState() != b.getCurrentState())
-                        || (c != null && a.getCurrentState() != c.getCurrentState())
-                        || (d != null && a.getCurrentState() != d.getCurrentState())) {
-                    edgeCells.add(a);
-                }
-            }
-        }
-
-        return edgeCells;
     }
 
 }
