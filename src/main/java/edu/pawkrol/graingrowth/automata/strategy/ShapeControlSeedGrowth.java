@@ -43,7 +43,7 @@ public class ShapeControlSeedGrowth extends Strategy {
         changed = false;
         grid.forEach(Cell::updatePreviousState);
         grid.forEach(c -> {
-            if (c.getCurrentState() != 0) return;
+            if (c.getCurrentState() != 0 || c.isLocked()) return;
 
             List<Cell> neighbours;
             int state;

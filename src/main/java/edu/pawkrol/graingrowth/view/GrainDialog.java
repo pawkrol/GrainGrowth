@@ -34,7 +34,7 @@ public class GrainDialog extends AppDialog<Boolean> {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 if (removeRadio.isSelected()) {
-                    GrainTools.keepAndLockSelectedGrains(grid, states);
+                    removeGrains();
                 } else {
                     keepGrainBorders(keepAllRadio.isSelected());
                 }
@@ -46,6 +46,12 @@ public class GrainDialog extends AppDialog<Boolean> {
         });
 
         return dialog.showAndWait();
+    }
+
+    private void removeGrains() {
+        new GrainRemoveDialog()
+                .open()
+                .ifPresent(dualPhase -> GrainTools.keepAndLockSelectedGrains(grid, states, dualPhase));
     }
 
     private void keepGrainBorders(boolean keepAll) {

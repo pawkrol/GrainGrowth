@@ -26,7 +26,7 @@ public class NaiveSeedGrowth extends Strategy {
 
         grid.forEach(Cell::updatePreviousState);
         grid.forEach(c -> {
-            if (c.getCurrentState() != 0) return;
+            if (c.getCurrentState() != 0 || c.isLocked()) return;
 
             List<Cell> neighbours = neighbourhood.neighbours(grid, c);
 
@@ -46,7 +46,9 @@ public class NaiveSeedGrowth extends Strategy {
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {
-        return neighbours.stream().anyMatch(cell -> cell.getPreviousState() > 0);
+        return neighbours.stream()
+                .filter(cell -> !cell.isLocked())
+                .anyMatch(cell -> cell.getPreviousState() > 0);
     }
 
     public static NaiveSeedGrowth getInstance(){

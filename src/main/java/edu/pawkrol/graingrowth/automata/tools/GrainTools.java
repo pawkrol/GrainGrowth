@@ -44,13 +44,22 @@ public class GrainTools {
         return edgeCells;
     }
 
-    public static void keepAndLockSelectedGrains(Grid grid, List<Integer> statesToKeep) {
-        grid.setNumberOfStates(1);
+    public static void keepAndLockSelectedGrains(Grid grid, List<Integer> statesToKeep, boolean clearState) {
+        if (clearState) {
+            grid.setNumberOfStates(1);
+        } else {
+            grid.setNumberOfStates(statesToKeep.size());
+        }
+
         grid.forEach(c -> {
             if (!statesToKeep.contains(c.getCurrentState())) {
                 c.setCurrentState(0);
             } else {
-                c.setCurrentState(-2);
+                c.setLocked(true);
+
+                if (clearState) {
+                    c.setCurrentState(-2);
+                }
             }
         });
     }

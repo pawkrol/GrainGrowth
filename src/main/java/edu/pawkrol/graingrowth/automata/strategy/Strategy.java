@@ -21,6 +21,7 @@ public abstract class Strategy {
 
     protected Map<Integer, Long> getStatesFrequency(List<Cell> neighbours) {
         return neighbours.stream()
+                .filter(c -> !c.isLocked())
                 .map(Cell::getPreviousState)
                 .filter(s -> s > 0)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));

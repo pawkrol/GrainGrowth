@@ -10,6 +10,8 @@ public class Cell {
     private int previousState;
     private int currentState;
 
+    private boolean locked;
+
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
@@ -49,6 +51,14 @@ public class Cell {
 
     public void updatePreviousState() {
         previousState = currentState;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     @Override
