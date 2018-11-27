@@ -1,6 +1,7 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.Grid;
+import edu.pawkrol.graingrowth.automata.tools.seed.AllRandomSeeder;
 import edu.pawkrol.graingrowth.automata.tools.seed.RandomSeeder;
 import edu.pawkrol.graingrowth.automata.tools.seed.Seeder;
 import javafx.scene.control.ButtonType;
@@ -21,7 +22,7 @@ public class SeedDialog extends AppDialog<Boolean> {
 
     @Override
     public Optional<Boolean> open() {
-        dialog.setTitle("Seed");
+        dialog.setTitle("Nucleons");
 
         dialog.getDialogPane()
                 .getButtonTypes()
@@ -32,7 +33,8 @@ public class SeedDialog extends AppDialog<Boolean> {
         TextField rdText = (TextField) dialog.getDialogPane().lookup("#rdText");
 
         seederCombo.getItems().addAll(
-                new RandomSeeder()
+                new RandomSeeder(),
+                new AllRandomSeeder()
         );
         seederCombo.getSelectionModel().selectFirst();
 

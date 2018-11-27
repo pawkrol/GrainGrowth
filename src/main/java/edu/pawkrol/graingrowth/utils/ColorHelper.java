@@ -10,7 +10,7 @@ public class ColorHelper {
     private static Map<Integer, Color> colorMap = new HashMap<>();
 
     static {
-        colorMap.put(-2, Color.color(.4, .4, .4));
+        colorMap.put(-2, Color.color(1, 0, 1));
         colorMap.put(-1, Color.BLACK);
         colorMap.put(0, Color.WHITE);
     }
@@ -31,7 +31,7 @@ public class ColorHelper {
     }
 
     private static Color randomColor(){
-        Color c = Color.color(Math.random(), Math.random(), Math.random());
+        Color c = Color.color(Math.random() * 0.4, Math.random() * 0.5, Math.random());
         if (colorMap.containsValue(c)) {
             return randomColor();
         }

@@ -59,9 +59,9 @@ public class GrainDialog extends AppDialog<Boolean> {
                 .open()
                 .ifPresent(size -> {
                     if (keepAll) {
-                        GrainTools.keepAndLockGrainEdges(grid, states, size);
+                        GrainTools.keepAndLockGrainEdges(grid, states, size.intValue());
                     } else {
-                        GrainTools.keepAndLockGrainOutsideEdges(grid, states, size);
+                        GrainTools.keepAndLockGrainOutsideEdges(grid, states, size.intValue());
                     }
                 });
     }

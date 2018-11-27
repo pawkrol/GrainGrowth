@@ -11,7 +11,7 @@
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
             <children>
-                <Label alignment="CENTER" text="Seeder" textAlignment="CENTER">
+                <Label alignment="CENTER" text="Nucleons" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>

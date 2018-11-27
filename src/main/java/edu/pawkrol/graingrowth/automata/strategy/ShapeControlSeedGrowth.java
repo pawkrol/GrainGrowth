@@ -94,7 +94,6 @@ public class ShapeControlSeedGrowth extends Strategy {
         return finished;
     }
 
-
     public int getProbability() {
         return probability;
     }

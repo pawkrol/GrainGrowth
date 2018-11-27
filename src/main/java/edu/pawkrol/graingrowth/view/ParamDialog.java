@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 
 import java.util.Optional;
 
-public class ParamDialog extends AppDialog<Integer>{
+public class ParamDialog extends AppDialog<Double>{
 
     private String title;
     private String paramName;
@@ -25,7 +25,7 @@ public class ParamDialog extends AppDialog<Integer>{
     }
 
     @Override
-    public Optional<Integer> open() {
+    public Optional<Double> open() {
         dialog.setTitle(title);
 
         dialog.getDialogPane()
@@ -40,7 +40,7 @@ public class ParamDialog extends AppDialog<Integer>{
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
-                return Integer.parseInt(paramText.getText());
+                return Double.parseDouble(paramText.getText());
             }
 
             return null;

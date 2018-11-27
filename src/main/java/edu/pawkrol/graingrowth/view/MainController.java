@@ -1,6 +1,7 @@
 package edu.pawkrol.graingrowth.view;
 
 import edu.pawkrol.graingrowth.automata.AutomataResolver;
+import edu.pawkrol.graingrowth.automata.strategy.MonteCarlo;
 import edu.pawkrol.graingrowth.automata.tools.GrainTools;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.*;
@@ -47,6 +48,7 @@ public class MainController implements Initializable {
     @FXML Button playBtn;
     @FXML Button stopBtn;
     @FXML Button doneBtn;
+    @FXML TextField stepsTxt;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,13 +56,14 @@ public class MainController implements Initializable {
 
         strategyCombo.getItems().addAll(
                 NaiveSeedGrowth.getInstance(),
-                ShapeControlSeedGrowth.getInstance()
+                ShapeControlSeedGrowth.getInstance(),
+                MonteCarlo.getInstance()
         );
         strategyCombo.getSelectionModel().selectFirst();
 
         neighbourhoodCombo.getItems().addAll(
-                new VonNeumann(),
                 new Moore(),
+                new VonNeumann(),
                 new FurtherMoore()
         );
         neighbourhoodCombo.getSelectionModel().selectFirst();
@@ -82,10 +85,19 @@ public class MainController implements Initializable {
         automataResolver.setStrategy(strategy);
         automataResolver.setNeighbourhood(neighbourhood);
 
+        int maxSteps = Integer.parseInt(stepsTxt.getText());
+        automataResolver.setMaxIterations(maxSteps);
+
         if (strategy instanceof ShapeControlSeedGrowth) {
             new ParamDialog("Set probability", "Probability")
                     .open()
-                    .ifPresent(((ShapeControlSeedGrowth) strategy)::setProbability);
+                    .ifPresent(probability ->
+                            ((ShapeControlSeedGrowth) strategy).setProbability(probability.intValue())
+                    );
+        } else if (strategy instanceof MonteCarlo) {
+            new ParamDialog("Grain Boundary Energy", "J", 1.0)
+                    .open()
+                    .ifPresent(((MonteCarlo) strategy)::setGrainBoundaryEnergy);
         }
 
         if (automataResolver.getState() != Worker.State.READY) {
@@ -158,7 +170,7 @@ public class MainController implements Initializable {
                 .open()
                 .ifPresent(n -> {
                     Grid grid = automataResolver.getGrid();
-                    List<Integer> states = GrainTools.selectRandomGrains(grid, n);
+                    List<Integer> states = GrainTools.selectRandomGrains(grid, n.intValue());
 
                     new GrainDialog(grid, states)
                             .open()
@@ -256,6 +268,7 @@ public class MainController implements Initializable {
                     }
                 })
         );
+        automataResolver.setOnCancelled(event -> disableControls(false));
         automataResolver.init();
     }
 

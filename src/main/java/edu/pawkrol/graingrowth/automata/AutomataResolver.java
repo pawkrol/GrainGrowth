@@ -12,6 +12,7 @@ public class AutomataResolver extends ScheduledService<Grid> {
     private Grid grid;
 
     private int iteration;
+    private int maxIterations;
 
     public void init() {
         iteration = 0;
@@ -50,6 +51,14 @@ public class AutomataResolver extends ScheduledService<Grid> {
         return strategy.isFinished();
     }
 
+    public int getMaxIterations() {
+        return maxIterations;
+    }
+
+    public void setMaxIterations(int maxIterations) {
+        this.maxIterations = maxIterations;
+    }
+
     public Grid makeStep(){
         strategy.evaluate(grid, neighbourhood);
         return grid;
@@ -60,7 +69,9 @@ public class AutomataResolver extends ScheduledService<Grid> {
         return new Task<Grid>() {
             @Override
             protected Grid call() throws Exception {
-                if ( isFinished() ) cancel();
+                if (isFinished() || (maxIterations > 0 && iteration >= maxIterations)) {
+                    cancel();
+                }
                 iteration++;
 
                 return makeStep();
