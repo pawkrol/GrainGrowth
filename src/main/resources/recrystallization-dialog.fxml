@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <Label text="Nucleation type">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      <RadioButton fx:id="constantRadio" mnemonicParsing="false" selected="true" text="Constant">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+         <toggleGroup>
+            <ToggleGroup fx:id="nucleationType" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="increasingRadio" mnemonicParsing="false" text="Increasing" toggleGroup="$nucleationType">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </RadioButton>
+      <RadioButton fx:id="atBeginingRadio" mnemonicParsing="false" text="At the begining" toggleGroup="$nucleationType">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </RadioButton>
+        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+            <children>
+                <Label alignment="CENTER" prefHeight="16.0" prefWidth="125.0" text="Nucleation value" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="nucleationValueText" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" text="10">
+                    <HBox.margin>
+                        <Insets left="10.0" />
+                    </HBox.margin>
+                </TextField>
+            </children>
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </HBox>
+      <Label text="Nucleation location">
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </Label>
+      <RadioButton fx:id="gbRadio" mnemonicParsing="false" selected="true" text="Grain boundaries">
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+         <toggleGroup>
+            <ToggleGroup fx:id="nucleationLoc" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="everywhereRadio" mnemonicParsing="false" text="Everywhere" toggleGroup="$nucleationLoc" />
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>
