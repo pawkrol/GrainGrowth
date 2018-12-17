@@ -5,13 +5,21 @@ import edu.pawkrol.graingrowth.automata.Grid;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GridPainter {
 
+    public enum PaintMode {
+        NORMAL,
+        ENERGY
+    }
+
     private static final int HOVERED_STATE = -3;
+
+    private PaintMode mode = PaintMode.NORMAL;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -69,6 +77,14 @@ public class GridPainter {
         return gridSelectionEnabled;
     }
 
+    public PaintMode getMode() {
+        return mode;
+    }
+
+    public void setMode(PaintMode mode) {
+        this.mode = mode;
+    }
+
     public Observer<Integer> setGridSelectionEnabled(boolean gridSelectionEnabled) {
         this.gridSelectionEnabled = gridSelectionEnabled;
         this.selectedStates.clear();
@@ -92,8 +108,19 @@ public class GridPainter {
                 alpha = isSelected? alpha : 0.25;
             }
 
+            Color color;
+            if (mode == PaintMode.ENERGY) {
+                color = ColorHelper.getEnergyColor(c.getH());
+            } else {
+                if (!c.isRecrystallized()) {
+                    color = ColorHelper.getColor(c.getCurrentState());
+                } else {
+                    color = ColorHelper.getRecrystallizedColor(c.getCurrentState());
+                }
+            }
+
             gc.setGlobalAlpha(alpha);
-            gc.setFill(ColorHelper.getColor(c.getCurrentState()));
+            gc.setFill(color);
             gc.fillRect(
                     xOffset + c.getX() * cellSize,
                     yOffset + c.getY() * cellSize,

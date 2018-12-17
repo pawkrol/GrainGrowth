@@ -12,6 +12,10 @@ public class Cell {
 
     private boolean locked;
 
+    private int h;
+
+    private boolean recrystallized;
+
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
@@ -59,6 +63,22 @@ public class Cell {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
+
+    public boolean isRecrystallized() {
+        return recrystallized;
+    }
+
+    public void setRecrystallized(boolean recrystallized) {
+        this.recrystallized = recrystallized;
     }
 
     @Override

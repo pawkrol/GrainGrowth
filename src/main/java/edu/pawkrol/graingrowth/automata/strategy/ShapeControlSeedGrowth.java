@@ -6,6 +6,7 @@ import edu.pawkrol.graingrowth.automata.neighbourhood.FurtherMoore;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Moore;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
 import edu.pawkrol.graingrowth.automata.neighbourhood.VonNeumann;
+import edu.pawkrol.graingrowth.view.ParamDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,9 @@ public class ShapeControlSeedGrowth extends Strategy {
     @Override
     public void init() {
         finished = false;
+        new ParamDialog("Set probability", "Probability")
+                .open()
+                .ifPresent(probability -> this.setProbability(probability.intValue()));
     }
 
     //Passed neighbourhood is not used in that case

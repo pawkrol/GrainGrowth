@@ -3,6 +3,7 @@ package edu.pawkrol.graingrowth.automata.strategy;
 import edu.pawkrol.graingrowth.automata.Cell;
 import edu.pawkrol.graingrowth.automata.Grid;
 import edu.pawkrol.graingrowth.automata.neighbourhood.Neighbourhood;
+import edu.pawkrol.graingrowth.view.ParamDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -18,6 +19,9 @@ public class MonteCarlo extends Strategy {
     @Override
     public void init() {
         random = new Random();
+        new ParamDialog("Grain Boundary Energy", "J", 1.0)
+                .open()
+                .ifPresent(this::setGrainBoundaryEnergy);
     }
 
     @Override

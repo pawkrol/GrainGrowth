@@ -93,4 +93,14 @@ public class GrainTools {
 
         keepAndLockGrainEdges(grid, Collections.singletonList(-1), thickness);
     }
+
+    public static void distributeEnergyHomogenous(Grid grid, int h) {
+        grid.forEach(c -> c.setH(h));
+    }
+
+    public static void distributeEnergyHeterogenous(Grid grid, int hMin, int hMax) {
+        grid.forEach(c -> c.setH(hMin));
+        GrainTools.getGrainEdgeCells(grid)
+                .forEach(c -> c.setH(hMax));
+    }
 }
