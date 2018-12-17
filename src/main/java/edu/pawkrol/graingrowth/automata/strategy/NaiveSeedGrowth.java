@@ -16,7 +16,7 @@ public class NaiveSeedGrowth extends Strategy {
     private NaiveSeedGrowth() {}
 
     @Override
-    public void init() {
+    public void init(Grid grid) {
         finished = false;
     }
 

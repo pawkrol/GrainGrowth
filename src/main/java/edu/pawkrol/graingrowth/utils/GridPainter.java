@@ -112,11 +112,7 @@ public class GridPainter {
             if (mode == PaintMode.ENERGY) {
                 color = ColorHelper.getEnergyColor(c.getH());
             } else {
-                if (!c.isRecrystallized()) {
-                    color = ColorHelper.getColor(c.getCurrentState());
-                } else {
-                    color = ColorHelper.getRecrystallizedColor(c.getCurrentState());
-                }
+                color = ColorHelper.getColor(c.getCurrentState());
             }
 
             gc.setGlobalAlpha(alpha);

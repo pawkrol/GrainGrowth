@@ -3,6 +3,7 @@ package edu.pawkrol.graingrowth.automata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class Grid {
 
@@ -23,6 +24,10 @@ public class Grid {
 
     public void forEach(Consumer<Cell> f){
         grid.forEach(f);
+    }
+
+    public Stream<Cell> stream() {
+        return grid.stream();
     }
 
     public List<Cell> getGrid() {

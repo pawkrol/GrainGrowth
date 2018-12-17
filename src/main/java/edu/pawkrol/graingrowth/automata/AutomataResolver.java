@@ -20,7 +20,7 @@ public class AutomataResolver extends ScheduledService<Grid> {
 
     public void setStrategy(Strategy strategy){
         this.strategy = strategy;
-        this.strategy.init();
+        this.strategy.init(grid);
     }
 
     public Strategy getStrategy() {
@@ -59,6 +59,12 @@ public class AutomataResolver extends ScheduledService<Grid> {
         this.maxIterations = maxIterations;
     }
 
+    @Override
+    public boolean cancel() {
+        strategy.clean();
+        return super.cancel();
+    }
+
     public Grid makeStep(){
         strategy.evaluate(grid, neighbourhood);
         return grid;
@@ -70,7 +76,7 @@ public class AutomataResolver extends ScheduledService<Grid> {
             @Override
             protected Grid call() throws Exception {
                 if (isFinished() || (maxIterations > 0 && iteration >= maxIterations)) {
-                    cancel();
+                    this.cancel();
                 }
                 iteration++;
 

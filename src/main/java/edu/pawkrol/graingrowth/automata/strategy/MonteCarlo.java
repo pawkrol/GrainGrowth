@@ -17,7 +17,7 @@ public class MonteCarlo extends Strategy {
     private double grainBoundaryEnergy = 1.0;
 
     @Override
-    public void init() {
+    public void init(Grid grid) {
         random = new Random();
         new ParamDialog("Grain Boundary Energy", "J", 1.0)
                 .open()

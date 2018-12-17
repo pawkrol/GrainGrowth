@@ -8,8 +8,13 @@ import java.util.Map;
 public class ColorHelper {
 
     private static Map<Integer, Color> colorMap = new HashMap<>();
-    private static Map<Integer, Color> recrystallizedColorMap = new HashMap<>();
     private static Map<Integer, Color> energyColorMap = new HashMap<>();
+
+    private static boolean colorsInverted = false;
+
+    private static float redFactor = 0f;
+    private static float greenFactor = 0.1f;
+    private static float blueFactor = 1f;
 
     static {
         colorMap.put(-2, Color.color(1, 0, 1));
@@ -30,7 +35,7 @@ public class ColorHelper {
         Color color = colorMap.get(value);
 
         if (color == null) {
-            color = randomColor(0.4f, 0.5f, 1);
+            color = randomColor();
             setColor(value, color);
         }
 
@@ -41,29 +46,32 @@ public class ColorHelper {
         return energyColorMap.get(value);
     }
 
-    public static Color getRecrystallizedColor(int value) {
-        Color color = recrystallizedColorMap.get(value);
-
-        if (color == null) {
-            color = randomColor(1, 0.4f, 0.1f);
-            recrystallizedColorMap.put(value, color);
-        }
-
-        return color;
-    }
-
     public static void setColor(int value, Color color) {
         colorMap.put(value, color);
     }
 
-    private static Color randomColor(float redFactor, float greenFactor, float blueFactor){
+    public static void inverseColorSpectrum() {
+        colorsInverted = !colorsInverted;
+
+        if (colorsInverted) {
+            redFactor = 1.f;
+            greenFactor = 0.1f;
+            blueFactor = 0.f;
+        } else {
+            redFactor = 0f;
+            greenFactor = 1f;
+            blueFactor = 1f;
+        }
+    }
+
+    private static Color randomColor(){
         Color c = Color.color(
                 Math.random() * redFactor,
                 Math.random() * greenFactor,
                 Math.random() * blueFactor
         );
         if (colorMap.containsValue(c)) {
-            return randomColor(redFactor, greenFactor, blueFactor);
+            return randomColor();
         }
 
         return c;

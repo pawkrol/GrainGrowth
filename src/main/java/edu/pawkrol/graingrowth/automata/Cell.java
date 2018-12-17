@@ -15,6 +15,7 @@ public class Cell {
     private int h;
 
     private boolean recrystallized;
+    private boolean checked;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -79,6 +80,14 @@ public class Cell {
 
     public void setRecrystallized(boolean recrystallized) {
         this.recrystallized = recrystallized;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @Override

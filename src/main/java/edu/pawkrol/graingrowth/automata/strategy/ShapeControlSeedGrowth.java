@@ -31,7 +31,7 @@ public class ShapeControlSeedGrowth extends Strategy {
     }
 
     @Override
-    public void init() {
+    public void init(Grid grid) {
         finished = false;
         new ParamDialog("Set probability", "Probability")
                 .open()

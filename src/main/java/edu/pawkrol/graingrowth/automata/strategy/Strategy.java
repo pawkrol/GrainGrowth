@@ -12,12 +12,13 @@ import java.util.stream.Collectors;
 
 public abstract class Strategy {
 
-    public abstract void init();
+    public abstract void init(Grid grid);
     public abstract void evaluate(Grid grid, Neighbourhood neighbourhood);
 
     public boolean isFinished() {
         return false;
     }
+    public void clean() {}
 
     protected Map<Integer, Long> getStatesFrequency(List<Cell> neighbours) {
         return neighbours.stream()
