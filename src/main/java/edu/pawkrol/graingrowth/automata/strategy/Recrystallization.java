@@ -85,7 +85,7 @@ public class Recrystallization extends Strategy {
                 int newE = getEnergy(newState, neighbours);
 
                 if (newE - prevE < 0) {
-                    c.setH(newE);
+                    c.setH(0);
                     c.setCurrentState(newState);
                     c.setRecrystallized(true);
                 }
